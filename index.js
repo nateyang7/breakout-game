@@ -26,6 +26,23 @@ let leftPressed = false;
 document.addEventListener('keydown', (event) => keyDownHandler(event));
 document.addEventListener('keyup', (event) => keyUpHandler(event));
 
+// Bricks configuration
+const brickRowCount = 3;
+const brickColumnCount = 5;
+const brickWidth = 75;
+const brickHeight = 20;
+const brickPadding = 10;
+const brickOffsetTop = 30;
+const brickOffsetLeft = 30;
+
+const bricks = [];
+for (let c = 0; c < brickColumnCount; c++) {
+  bricks[c] = [];
+  for (let r = 0; r < brickRowCount; r++) {
+    bricks[c][r] = { x: 0, y: 0};
+  }
+}
+
 /**
  * Checks if a key is down.
  * @param {*} e  - Event received by a key down.
@@ -73,6 +90,25 @@ const drawPaddle = () => {
 }
 
 /**
+ * Draw bricks
+ */
+const drawBricks = () => {
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+      const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+      bricks[c][r].x = brickX;
+      bricks[c][r].y = brickY;
+      ctx.beginPath();
+      ctx.rect(brickX, brickY, brickWidth, brickHeight);
+      ctx.fillStyle = '#0095DD';
+      ctx.fill();
+      ctx.closePath();
+    }
+  }
+}
+
+/**
  * Checks collisions
  */
 const checkCollisions = () => {
@@ -108,6 +144,7 @@ const checkPressedKeys = () => {
  */
 const draw = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBricks();
   drawBall();
   drawPaddle();
   checkCollisions();
