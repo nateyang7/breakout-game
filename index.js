@@ -8,6 +8,7 @@ runButton.addEventListener('click', () => {
 });
 const elementsColor = '#0095DD';
 const gameFont = '16px Arial';
+let spacebarPressed = false;
 let interval = 0;
 let score = 0;
 let lives = 3;
@@ -43,34 +44,38 @@ const brickOffsetLeft = 30;
 let isIntact = true;
 
 const bricks = [];
-for (let c = 0; c < brickColumnCount; c++) {
-  bricks[c] = [];
-  for (let r = 0; r < brickRowCount; r++) {
-    bricks[c][r] = { x: 0, y: 0, status: isIntact};  // Need enums for brick's status
+for (let column = 0; column < brickColumnCount; column++) {
+  bricks[column] = [];
+  for (let row = 0; row < brickRowCount; row++) {
+    bricks[column][row] = { x: 0, y: 0, status: isIntact};  // Need enums for brick's status
   }
 }
 
 /**
  * Checks if a key is down.
- * @param {*} e  - Event received by a key down.
+ * @param { Event } e  - Event received by a key down.
  */
 const keyDownHandler = e => {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = true;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
     leftPressed = true;
+  } else if (e.key === 'spacebar') {
+    spacebarPressed = true;
   }
 }
 
 /**
  * Checks if a key is up.
- * @param {*} e - Event received by a key up.
+ * @param { Event } e - Event received by a key up.
  */
 const keyUpHandler = e => {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = false;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
     leftPressed = false;
+  } else if (e.key === 'spacebar') {
+    spacebarPressed = false;
   }
 }
 
@@ -110,13 +115,13 @@ const drawPaddle = () => {
  * Draw bricks
  */
 const drawBricks = () => {
-  for (let c = 0; c < brickColumnCount; c++) {
-    for (let r = 0; r < brickRowCount; r++) {
-      if (bricks[c][r].status) { // Intact brick
-        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-        bricks[c][r].x = brickX;
-        bricks[c][r].y = brickY;
+  for (let column = 0; column < brickColumnCount; column++) {
+    for (let row = 0; row < brickRowCount; row++) {
+      if (bricks[column][row].status) { // Intact brick
+        const brickX = column * (brickWidth + brickPadding) + brickOffsetLeft;
+        const brickY = row * (brickHeight + brickPadding) + brickOffsetTop;
+        bricks[column][row].x = brickX;
+        bricks[column][row].y = brickY;
         ctx.beginPath();
         ctx.rect(brickX, brickY, brickWidth, brickHeight);
         ctx.fillStyle = elementsColor;
@@ -147,8 +152,6 @@ const checkCollisions = () => {
       } else {
         x = canvas.width / 2;
         y = canvas.height / 2;
-        //dx = 2;
-        //dy = -2;
         paddleX = (canvas.width - paddleWidth) / 2;
       }
     }
@@ -159,9 +162,9 @@ const checkCollisions = () => {
  * Detect collisions of the ball with bricks.
  */
 function collideWithBricks() {
-  for (let c = 0; c < brickColumnCount; c++) {
-    for (let r = 0; r < brickRowCount; r++) {
-      const b = bricks[c][r]; // Brick object
+  for (let column = 0; column < brickColumnCount; column++) {
+    for (let row = 0; row < brickRowCount; row++) {
+      const b = bricks[column][row]; // Brick object
       if (b.status) {
         if (
           x > b.x &&
@@ -215,15 +218,12 @@ const checkPressedKeys = () => {
  * Draw the game.
  */
 const draw = () => {
+  const functions = [
+    drawBricks, drawBall, drawPaddle, drawScore, drawLives,
+    collideWithBricks, checkCollisions, checkPressedKeys
+  ];
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBricks();
-  drawBall();
-  drawPaddle();
-  drawScore();
-  drawLives();
-  collideWithBricks();
-  checkCollisions();
-  checkPressedKeys();
+  functions.forEach(func => func());
   x += dx;
   y += dy;
   requestAnimationFrame(draw);
