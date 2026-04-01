@@ -5,11 +5,11 @@ runButton.addEventListener('click', () => {
   startGame();
   runButton.disabled = true;
 });
+const elementsColor = '#0095DD';
 let interval = 0;
 
 // Ball position and movements
 const ballRadius = 10;
-let ballColor = '#0095DD';
 let dx = 2;
 let dy = -2;
 let x = canvas.width / 2;
@@ -34,12 +34,13 @@ const brickHeight = 20;
 const brickPadding = 10;
 const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
+let isIntact = true;
 
 const bricks = [];
 for (let c = 0; c < brickColumnCount; c++) {
   bricks[c] = [];
   for (let r = 0; r < brickRowCount; r++) {
-    bricks[c][r] = { x: 0, y: 0};
+    bricks[c][r] = { x: 0, y: 0, status: isIntact};  // Need enums for brick's status
   }
 }
 
@@ -73,7 +74,7 @@ const keyUpHandler = e => {
 const drawBall = () => {
   ctx.beginPath();
   ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-  ctx.fillStyle = ballColor;
+  ctx.fillStyle = elementsColor;
   ctx.fill();
   ctx.closePath();
 }
@@ -84,7 +85,7 @@ const drawBall = () => {
 const drawPaddle = () => {
   ctx.beginPath();
   ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-  ctx.fillStyle = '#0095DD';
+  ctx.fillStyle = elementsColor;
   ctx.fill();
   ctx.closePath();
 }
@@ -95,15 +96,17 @@ const drawPaddle = () => {
 const drawBricks = () => {
   for (let c = 0; c < brickColumnCount; c++) {
     for (let r = 0; r < brickRowCount; r++) {
-      const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-      const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-      bricks[c][r].x = brickX;
-      bricks[c][r].y = brickY;
-      ctx.beginPath();
-      ctx.rect(brickX, brickY, brickWidth, brickHeight);
-      ctx.fillStyle = '#0095DD';
-      ctx.fill();
-      ctx.closePath();
+      if (bricks[c][r].status) { // Intact brick
+        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+        bricks[c][r].x = brickX;
+        bricks[c][r].y = brickY;
+        ctx.beginPath();
+        ctx.rect(brickX, brickY, brickWidth, brickHeight);
+        ctx.fillStyle = elementsColor;
+        ctx.fill();
+        ctx.closePath();
+      }
     }
   }
 }
@@ -119,11 +122,33 @@ const checkCollisions = () => {
     dy = -dy;
   } else if (y + dy > canvas.height - ballRadius) {
     if (x > paddleX && x < paddleX + paddleWidth) {
-      dy = -dy;
+      dy = -dy; // Collision with the paddle
     } else {
       alert('GAME OVER');
       document.location.reload();
       clearInterval(interval); // Needed for Chrome to end game
+    }
+  }
+}
+
+/**
+ * Detect collisions of the ball with bricks.
+ */
+function collideWithBricks() {
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      const b = bricks[c][r]; // Brick object
+      if (b.status) {
+        if (
+          x > b.x &&
+          x < b.x + brickWidth &&
+          y > b.y &&
+          y < b.y + brickHeight
+        ) {
+          dy = -dy;
+          b.status = !b.status;
+        }
+      }
     }
   }
 }
@@ -147,6 +172,7 @@ const draw = () => {
   drawBricks();
   drawBall();
   drawPaddle();
+  collideWithBricks();
   checkCollisions();
   checkPressedKeys();
   x += dx;
