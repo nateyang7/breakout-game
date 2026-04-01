@@ -7,8 +7,10 @@ runButton.addEventListener('click', () => {
   runButton.disabled = true;
 });
 const elementsColor = '#0095DD';
+const gameFont = '16px Arial';
 let interval = 0;
 let score = 0;
+let lives = 3;
 
 // Ball position and movements
 const ballRadius = 10;
@@ -138,9 +140,17 @@ const checkCollisions = () => {
     if (x > paddleX && x < paddleX + paddleWidth) {
       dy = -dy; // Collision with the paddle
     } else {
-      alert('GAME OVER');
-      document.location.reload();
-      clearInterval(interval); // Needed for Chrome to end game
+      lives--;
+      if (!lives) {
+        alert('GAME OVER');
+        document.location.reload();
+      } else {
+        x = canvas.width / 2;
+        y = canvas.height / 2;
+        dx = 2;
+        dy = -2;
+        paddleX = (canvas.width - paddleWidth) / 2;
+      }
     }
   }
 }
@@ -165,7 +175,6 @@ function collideWithBricks() {
           if (score === brickRowCount * brickColumnCount) {
             alert('YOU WIN, CONGRATULATIONS!');
             document.location.reload();
-            clearInterval(interval); // Needed for Chrome to end game
           }
         }
       }
@@ -180,6 +189,15 @@ const drawScore = () => {
   ctx.font = '16px Arial';
   ctx.fillStyle = elementsColor;
   ctx.fillText(`Score: ${score}`, 8, 20);
+}
+
+/**
+ * Draw lives.
+ */
+const drawLives = () => {
+  ctx.font = gameFont;
+  ctx.fillStyle = elementsColor;
+  ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
 }
 
 /**
@@ -202,14 +220,16 @@ const draw = () => {
   drawBall();
   drawPaddle();
   drawScore();
+  drawLives();
   collideWithBricks();
   checkCollisions();
   checkPressedKeys();
   x += dx;
   y += dy;
+  requestAnimationFrame(draw);
 };
 
 /**
  * Start the game.
  */
-const startGame = () => interval = setInterval(draw, 10);
+const startGame = () => draw();
