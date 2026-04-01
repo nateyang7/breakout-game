@@ -1,3 +1,4 @@
+// General settings
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 const runButton = document.getElementById('runButton');
@@ -7,6 +8,7 @@ runButton.addEventListener('click', () => {
 });
 const elementsColor = '#0095DD';
 let interval = 0;
+let score = 0;
 
 // Ball position and movements
 const ballRadius = 10;
@@ -146,11 +148,26 @@ function collideWithBricks() {
           y < b.y + brickHeight
         ) {
           dy = -dy;
-          b.status = !b.status;
+          b.status = !b.status; // Break the brick
+          score++;
+          if (score === brickRowCount * brickColumnCount) {
+            alert('YOU WIN, CONGRATULATIONS!');
+            document.location.reload();
+            clearInterval(interval); // Needed for Chrome to end game
+          }
         }
       }
     }
   }
+}
+
+/**
+ * Draw the score.
+ */
+const drawScore = () => {
+  ctx.font = '16px Arial';
+  ctx.fillStyle = elementsColor;
+  ctx.fillText(`Score: ${score}`, 8, 20);
 }
 
 /**
@@ -172,6 +189,7 @@ const draw = () => {
   drawBricks();
   drawBall();
   drawPaddle();
+  drawScore();
   collideWithBricks();
   checkCollisions();
   checkPressedKeys();
