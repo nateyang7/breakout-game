@@ -25,8 +25,10 @@ let paddleX = (canvas.width - paddleWidth) / 2;
 // Paddle controls
 let rightPressed = false;
 let leftPressed = false;
-document.addEventListener('keydown', (event) => keyDownHandler(event));
-document.addEventListener('keyup', (event) => keyUpHandler(event));
+document.addEventListener('keydown', event => keyDownHandler(event));
+document.addEventListener('keyup', event => keyUpHandler(event));
+
+document.addEventListener('mousemove', event => mouseMoveHandler(event));
 
 // Bricks configuration
 const brickRowCount = 3;
@@ -67,6 +69,16 @@ const keyUpHandler = e => {
     rightPressed = false;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
     leftPressed = false;
+  }
+}
+
+/**
+ * Checks if the mouse is moved.
+ */
+const mouseMoveHandler = e => {
+  const relativeX = e.clientX - canvas.offsetLeft;
+  if (relativeX > 0 && relativeX < canvas.width) {
+    paddleX = relativeX - paddleWidth / 2
   }
 }
 
