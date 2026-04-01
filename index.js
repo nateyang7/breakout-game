@@ -5,6 +5,7 @@ runButton.addEventListener('click', () => {
   startGame();
   runButton.disabled = true;
 });
+let interval = 0;
 
 // Ball position and movements
 const ballRadius = 10;
@@ -78,8 +79,16 @@ const checkCollisions = () => {
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
     dx = -dx; // Collision with left or right
   }
-  if (y + dy < ballRadius || y + dy > canvas.height - ballRadius) {
-    dy = -dy; // Collision with top or bottom
+  if (y + dy < ballRadius) {
+    dy = -dy;
+  } else if (y + dy > canvas.height - ballRadius) {
+    if (x > paddleX && x < paddleX + paddleWidth) {
+      dy = -dy;
+    } else {
+      alert('GAME OVER');
+      document.location.reload();
+      clearInterval(interval); // Needed for Chrome to end game
+    }
   }
 }
 
@@ -110,4 +119,4 @@ const draw = () => {
 /**
  * Start the game.
  */
-const startGame = () => setInterval(draw, 10);
+const startGame = () => interval = setInterval(draw, 10);
