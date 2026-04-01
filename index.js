@@ -22,24 +22,32 @@ let paddleX = (canvas.width - paddleWidth) / 2;
 // Paddle controls
 let rightPressed = false;
 let leftPressed = false;
-document.addEventListener('keydown', keyDownHandler);
-document.addEventListener('keyup', keyUpHandler);
+document.addEventListener('keydown', (event) => keyDownHandler(event));
+document.addEventListener('keyup', (event) => keyUpHandler(event));
 
-function keyDownHandler(e) {
+/**
+ * Checks if a key is down.
+ * @param {*} e  - Event received by a key down.
+ */
+const keyDownHandler = e => {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = true;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
     leftPressed = true;
   }
-};
+}
 
-function keyUpHandler(e) {
+/**
+ * Checks if a key is up.
+ * @param {*} e - Event received by a key up.
+ */
+const keyUpHandler = e => {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = false;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
     leftPressed = false;
   }
-};
+}
 
 /**
  * Draw a ball.
