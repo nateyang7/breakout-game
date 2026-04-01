@@ -7,20 +7,34 @@ runButton.addEventListener('click', () => {
 });
 
 // Ball position and movements
+const ballRadius = 10;
+let ballColor = '#0095DD';
+let dx = 2;
+let dy = -2;
 let x = canvas.width / 2;
 let y = canvas.height - 30;
-const dx = 1;
-const dy = -1;
 
 /**
  * Draw a ball.
  */
 const drawBall = () => {
   ctx.beginPath();
-  ctx.arc(x, y, 10, 0, Math.PI * 2);
-  ctx.fillStyle = '#0095DD';
+  ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+  ctx.fillStyle = ballColor;
   ctx.fill();
   ctx.closePath();
+}
+
+/**
+ * Checks collisions
+ */
+const checkCollisions = () => {
+  if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+    dx = -dx; // Collision with left or right
+  }
+  if (y + dy < ballRadius || y + dy > canvas.height - ballRadius) {
+    dy = -dy; // Collision with top or bottom
+  }
 }
 
 /**
@@ -29,6 +43,7 @@ const drawBall = () => {
 const draw = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBall();
+  checkCollisions();
   x += dx;
   y += dy;
 };
