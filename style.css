@@ -3,12 +3,18 @@
   margin: 0;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 5em;
+}
+
+
 canvas {
   background: #eeeeee;
-  display: block;
   margin: 0 auto;
 }
 
 button {
-  display: block;
+  margin: 1em auto;
 }

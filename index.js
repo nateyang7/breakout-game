@@ -14,8 +14,8 @@ let lives = 3;
 
 // Ball position and movements
 const ballRadius = 10;
-let dx = 2;
-let dy = -2;
+let dx = 4;
+let dy = -4;
 let x = canvas.width / 2;
 let y = canvas.height - 30;
 
@@ -147,8 +147,8 @@ const checkCollisions = () => {
       } else {
         x = canvas.width / 2;
         y = canvas.height / 2;
-        dx = 2;
-        dy = -2;
+        //dx = 2;
+        //dy = -2;
         paddleX = (canvas.width - paddleWidth) / 2;
       }
     }
