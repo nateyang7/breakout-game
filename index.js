@@ -54,6 +54,7 @@ for (let column = 0; column < brickColumnCount; column++) {
 /**
  * Checks if a key is down.
  * @param { Event } e  - Event received by a key down.
+ * @returns { void } Modifies the state of the pressed keys.
  */
 const keyDownHandler = e => {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
@@ -68,6 +69,7 @@ const keyDownHandler = e => {
 /**
  * Checks if a key is up.
  * @param { Event } e - Event received by a key up.
+ * @return { void } Modifies the state of the pressed keys.
  */
 const keyUpHandler = e => {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
@@ -81,6 +83,8 @@ const keyUpHandler = e => {
 
 /**
  * Checks if the mouse is moved.
+ * @param { Event } e - Event received by a mouse move.
+ * @return { void } Modifies the position of the paddle.
  */
 const mouseMoveHandler = e => {
   const relativeX = e.clientX - canvas.offsetLeft;
@@ -91,6 +95,7 @@ const mouseMoveHandler = e => {
 
 /**
  * Draw a ball.
+ * @return { void } Draws a ball on the canvas.
  */
 const drawBall = () => {
   ctx.beginPath();
@@ -102,6 +107,7 @@ const drawBall = () => {
 
 /**
  * Draw a paddle.
+ * @return { void } Draws a paddle on the canvas.
  */
 const drawPaddle = () => {
   ctx.beginPath();
@@ -113,6 +119,7 @@ const drawPaddle = () => {
 
 /**
  * Draw bricks
+ * @return { void } Draws bricks on the canvas.
  */
 const drawBricks = () => {
   for (let column = 0; column < brickColumnCount; column++) {
@@ -133,7 +140,8 @@ const drawBricks = () => {
 }
 
 /**
- * Checks collisions
+ * Checks collisions of the ball with the walls and the paddle.
+ * @return { void } Modifies the direction of the ball and the state of the game.
  */
 const checkCollisions = () => {
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
@@ -160,6 +168,7 @@ const checkCollisions = () => {
 
 /**
  * Detect collisions of the ball with bricks.
+ * @return { void } Modifies the status of the bricks and the score.
  */
 function collideWithBricks() {
   for (let column = 0; column < brickColumnCount; column++) {
@@ -196,6 +205,7 @@ const drawScore = () => {
 
 /**
  * Draw lives.
+ * @return { void } Draws the number of lives on the canvas.
  */
 const drawLives = () => {
   ctx.font = gameFont;
@@ -205,6 +215,7 @@ const drawLives = () => {
 
 /**
  * Checks pressed keys.
+ * @return { void } Modifies the state of the pressed keys.
  */
 const checkPressedKeys = () => {
   if (rightPressed) {
@@ -215,7 +226,8 @@ const checkPressedKeys = () => {
 }
 
 /**
- * Draw the game.
+ * Draw the game. 
+ * @return { void } Draws the game on the canvas and updates the state of the game.
  */
 const draw = () => {
   const functions = [
@@ -231,5 +243,6 @@ const draw = () => {
 
 /**
  * Start the game.
+ * @return { void } Starts the game by calling the draw function.
  */
 const startGame = () => draw();
