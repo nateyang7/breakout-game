@@ -13,14 +13,14 @@ class ExampleScene extends Phaser.Scene {
 
   // Methods
   preload() {
-    this.load.image("ball", "img/ball.png");
-    this.load.image("brick", "img/brick.png");
-    this.load.image("paddle", "img/paddle.png");
-    this.load.spritesheet("wobble", "img/wobble.png", {
+    this.load.image("ball", "assets/objects/ball.png");
+    this.load.image("brick", "assets/objects/brick.png");
+    this.load.image("paddle", "assets/objects/paddle.png");
+    this.load.spritesheet("wobble", "assets/animations/wobble.png", {
       frameWidth: 20,
       frameHeight: 20,
     });
-    this.load.spritesheet("button", "img/button.png", {
+    this.load.spritesheet("button", "assets/animations/button.png", {
       frameWidth: 120,
       frameHeight: 40,
     });
