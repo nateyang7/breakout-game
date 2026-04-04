@@ -1,7 +1,12 @@
 class ExampleScene extends Phaser.Scene {
+  // Properties
   ball;
   bricks;
   paddle;
+  scoreText;
+  score = 0;
+
+  // Methods
   preload() {
     this.load.image("ball", "img/ball.png");
     this.load.image("brick", "img/brick.png");
@@ -35,10 +40,18 @@ class ExampleScene extends Phaser.Scene {
 
     // Bricks
     this.initBricks();
+
+    // Score
+    this.scoreText = this.add.text(5, 5, "Points: 0", {
+      font: "18px Arial",
+      color: "#0095dd",
+    });
   }
 
   update() {
+    // Collision detection
     this.physics.collide(this.ball, this.paddle);
+    this.physics.collide(this.ball, this.bricks, (ball, brick) => this.hitBrick(ball, brick));
 
     // Paddle controls
     this.paddle.x = this.input.x || this.scale.width * 0.5;
@@ -56,6 +69,7 @@ class ExampleScene extends Phaser.Scene {
     }
   }
 
+  // Game methods
   initBricks() {
     const bricksLayout = {
       width: 50,
@@ -86,10 +100,13 @@ class ExampleScene extends Phaser.Scene {
         newBrick.body.setImmovable(true);
         this.bricks.add(newBrick);
       }
-
     }
+  }
 
-
+  hitBrick(ball, brick) {
+    brick.destroy();
+    this.score += 10;
+    this.scoreText.setText(`Points: ${this.score}`);
   }
 }
 
