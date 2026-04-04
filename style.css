@@ -2,20 +2,3 @@
   padding: 0;
   margin: 0;
 }
-
-body {
-  display: flex;
-  flex-direction: column;
-  margin: 5em;
-  background: #252525;
-}
-
-
-canvas {
-  background: #C4C4C4;
-  margin: 0 auto;
-}
-
-button {
-  margin: 1em auto;
-}
