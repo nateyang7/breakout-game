@@ -13,7 +13,7 @@ let interval = 0;
 let score = 0;
 let lives = 3;
 
-// Ball position and movements
+// Ball
 let ball = {
   radius: 10,
   x: canvas.width / 2,
@@ -21,20 +21,23 @@ let ball = {
   dx: 4,
   dy: -4,
   color: 'red'
-}
-
-/*
-const ballRadius = 10;
-let dx = 4;
-let dy = -4;
-let x = canvas.width / 2;
-let y = canvas.height - 30;
-*/
+};
 
 // Paddle
+let paddle = {
+  width: 75,
+  height: 10,
+  x: 0,
+  color: 'blue'
+};
+
+paddle.x = (canvas.width - paddle.width) / 2;
+
+/*
 const paddleHeight = 10;
 const paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2;
+*/
 
 // Paddle controls
 let rightPressed = false;
@@ -100,7 +103,7 @@ const keyUpHandler = e => {
 const mouseMoveHandler = e => {
   const relativeX = e.clientX - canvas.offsetLeft;
   if (relativeX > 0 && relativeX < canvas.width) {
-    paddleX = relativeX - paddleWidth / 2
+    paddle.x = relativeX - paddle.width / 2
   }
 }
 
@@ -122,8 +125,9 @@ const drawBall = () => {
  */
 const drawPaddle = () => {
   ctx.beginPath();
-  ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-  ctx.fillStyle = elementsColor;
+  ctx.rect(paddle.x, canvas.height - paddle.height, paddle.width,
+    paddle.height);
+  ctx.fillStyle = paddle.color;
   ctx.fill();
   ctx.closePath();
 }
@@ -162,7 +166,7 @@ const checkCollisions = () => {
   if (ball.y + ball.dy < ball.radius) {
     ball.dy = -ball.dy;
   } else if (ball.y + ball.dy > canvas.height - ball.radius) {
-    if (ball.x > paddleX && ball.x < paddleX + paddleWidth) {
+    if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
       ball.dy = -ball.dy; // Collision with the paddle
     } else {
       lives--;
@@ -172,7 +176,7 @@ const checkCollisions = () => {
       } else {
         ball.x = canvas.width / 2;
         ball.y = canvas.height / 2;
-        paddleX = (canvas.width - paddleWidth) / 2;
+        paddle.x = (canvas.width - paddle.width) / 2;
       }
     }
   }
@@ -231,9 +235,9 @@ const drawLives = () => {
  */
 const checkPressedKeys = () => {
   if (rightPressed) {
-    paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth);
+    paddle.x = Math.min(paddle.x + 7, canvas.width - paddle.width);
   } else if (leftPressed) {
-    paddleX = Math.max(paddleX - 7, 0);
+    paddle.x = Math.max(paddle.x - 7, 0);
   }
 }
 
