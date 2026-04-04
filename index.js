@@ -14,11 +14,22 @@ let score = 0;
 let lives = 3;
 
 // Ball position and movements
+let ball = {
+  radius: 10,
+  x: canvas.width / 2,
+  y: canvas.height - 30,
+  dx: 4,
+  dy: -4,
+  color: 'red'
+}
+
+/*
 const ballRadius = 10;
 let dx = 4;
 let dy = -4;
 let x = canvas.width / 2;
 let y = canvas.height - 30;
+*/
 
 // Paddle
 const paddleHeight = 10;
@@ -47,7 +58,7 @@ const bricks = [];
 for (let column = 0; column < brickColumnCount; column++) {
   bricks[column] = [];
   for (let row = 0; row < brickRowCount; row++) {
-    bricks[column][row] = { x: 0, y: 0, status: isIntact};  // Need enums for brick's status
+    bricks[column][row] = { x: 0, y: 0, status: isIntact };  // Need enums for brick's status
   }
 }
 
@@ -99,8 +110,8 @@ const mouseMoveHandler = e => {
  */
 const drawBall = () => {
   ctx.beginPath();
-  ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-  ctx.fillStyle = elementsColor;
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+  ctx.fillStyle = ball.color;
   ctx.fill();
   ctx.closePath();
 }
@@ -144,22 +155,23 @@ const drawBricks = () => {
  * @return { void } Modifies the direction of the ball and the state of the game.
  */
 const checkCollisions = () => {
-  if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-    dx = -dx; // Collision with left or right
+  if (ball.x + ball.dx > canvas.width - ball.radius ||
+    ball.x + ball.dx < ball.radius) {
+    ball.dx = -ball.dx; // Collision with left or right
   }
-  if (y + dy < ballRadius) {
-    dy = -dy;
-  } else if (y + dy > canvas.height - ballRadius) {
-    if (x > paddleX && x < paddleX + paddleWidth) {
-      dy = -dy; // Collision with the paddle
+  if (ball.y + ball.dy < ball.radius) {
+    ball.dy = -ball.dy;
+  } else if (ball.y + ball.dy > canvas.height - ball.radius) {
+    if (ball.x > paddleX && ball.x < paddleX + paddleWidth) {
+      ball.dy = -ball.dy; // Collision with the paddle
     } else {
       lives--;
       if (!lives) {
         alert('GAME OVER');
         document.location.reload();
       } else {
-        x = canvas.width / 2;
-        y = canvas.height / 2;
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
         paddleX = (canvas.width - paddleWidth) / 2;
       }
     }
@@ -176,12 +188,12 @@ function collideWithBricks() {
       const b = bricks[column][row]; // Brick object
       if (b.status) {
         if (
-          x > b.x &&
-          x < b.x + brickWidth &&
-          y > b.y &&
-          y < b.y + brickHeight
+          ball.x > b.x &&
+          ball.x < b.x + brickWidth &&
+          ball.y > b.y &&
+          ball.y < b.y + brickHeight
         ) {
-          dy = -dy;
+          ball.dy = -ball.dy;
           b.status = !b.status; // Break the brick
           score++;
           if (score === brickRowCount * brickColumnCount) {
@@ -236,8 +248,11 @@ const draw = () => {
   ];
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   functions.forEach(func => func());
-  x += dx;
-  y += dy;
+
+  // Ball keep moving
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
   requestAnimationFrame(draw);
 };
 
