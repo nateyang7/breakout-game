@@ -7,9 +7,13 @@ class ExampleScene extends Phaser.Scene {
   }
   create() {
     // Ball
-    this.ball = this.add.sprite(50, 50, "ball");
+    this.ball = this.add.sprite(
+      this.scale.width * 0.5,
+      this.scale.height * 0.5,
+      "ball",
+    );
     this.physics.add.existing(this.ball);
-    this.ball.body.setVelocity(200, 200);
+    this.ball.body.setVelocity(150, -150);
     this.ball.body.gravity.y;
     this.ball.body.setCollideWorldBounds(true, 1, 1);
     this.ball.body.setBounce(1);
