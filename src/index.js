@@ -5,6 +5,9 @@ class ExampleScene extends Phaser.Scene {
   paddle;
   scoreText;
   score = 0;
+  lives = 3;
+  livesText;
+  lifeLostText;
 
   // Methods
   preload() {
@@ -46,6 +49,24 @@ class ExampleScene extends Phaser.Scene {
       font: "18px Arial",
       color: "#0095dd",
     });
+
+    // Lives
+    const textStyle = { font: "18px Arial", fill: "#0095dd" };
+    this.livesText = this.add.text(
+      this.scale.width - 5,
+      5,
+      `Lives: ${this.lives}`,
+      textStyle,
+    );
+    this.livesText.setOrigin(1, 0);
+    this.lifeLostText = this.add.text(
+      this.scale.width * 0.5,
+      this.scale.height * 0.5,
+      "Life lost, click to continue",
+      textStyle,
+    );
+    this.lifeLostText.setOrigin(0.5, 0.5);
+    this.lifeLostText.visible = false;
   }
 
   update() {
@@ -63,9 +84,7 @@ class ExampleScene extends Phaser.Scene {
     );
 
     if (ballIsOutOfBounds) {
-      // Game over logic
-      alert("Game over!");
-      location.reload();
+      this.ballLeaveScreen();
     }
 
     if (this.bricks.countActive() === 0) {
@@ -112,6 +131,26 @@ class ExampleScene extends Phaser.Scene {
     brick.destroy();
     this.score += 10;
     this.scoreText.setText(`Points: ${this.score}`);
+  }
+
+  ballLeaveScreen() {
+    this.lives--;
+    if (this.lives > 0) {
+      this.livesText.setText(`Lives: ${this.lives}`);
+      this.lifeLostText.visible = true;
+      this.ball.body.reset(this.scale.width * 0.5, this.scale.height - 25);
+      this.input.once(
+        "pointerdown",
+        () => {
+          this.lifeLostText.visible = false;
+          this.ball.body.setVelocity(150, -150);
+        },
+        this,
+      );
+    } else {
+      // Game over logic
+      location.reload();
+    }
   }
 }
 
