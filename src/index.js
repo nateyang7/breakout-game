@@ -1,6 +1,10 @@
+// src/index.js
+
 class ExampleScene extends Phaser.Scene {
-  // Properties
+  // === Properties ===
   ball;
+  ballDX = 150;
+  ballDY = -150;
   bricks;
   paddle;
   scoreText;
@@ -11,7 +15,7 @@ class ExampleScene extends Phaser.Scene {
   playing = false;
   startButton;
 
-  // Methods
+  // === Methods ===
   preload() {
     this.load.image("ball", "assets/objects/ball.png");
     this.load.image("brick", "assets/objects/brick.png");
@@ -152,7 +156,11 @@ class ExampleScene extends Phaser.Scene {
     }
   }
 
-  // Game methods
+  // === Game methods ===
+  /**
+   * Initializes bricks on the canvas.
+   * @returns { void }
+   */
   initBricks() {
     const bricksLayout = {
       width: 50,
@@ -186,6 +194,12 @@ class ExampleScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * Destroy a brick when the ball collided with it.
+   * @param {*} ball - Ball collided with brick.
+   * @param {*} brick - Brick to destroy.
+   * @returns { void }
+   */
   hitBrick(ball, brick) {
     const destroyTween = this.tweens.add({
       targets: brick,
@@ -205,11 +219,21 @@ class ExampleScene extends Phaser.Scene {
     this.scoreText.setText(`Points: ${this.score}`);
   }
 
+  /**
+   * Bounce randomly the ball when hit by the paddle. 
+   * @param {*} ball - Ball to bounced off the paddle.
+   * @param {*} paddle - Paddle controlled by the player.
+   * @returns { void }
+   */
   hitPaddle(ball, paddle) {
     this.ball.anims.play("wobble");
     ball.body.velocity.x = -5 * (paddle.x - ball.x);
   }
 
+  /**
+   * Make the player lose lives and checks if it is a game over.
+   * @returns { void }
+   */
   ballLeaveScreen() {
     this.lives--;
     if (this.lives > 0) {
@@ -220,7 +244,7 @@ class ExampleScene extends Phaser.Scene {
         "pointerdown",
         () => {
           this.lifeLostText.visible = false;
-          this.ball.body.setVelocity(150, -150);
+          this.ball.body.setVelocity(this.ballDX, this.ballDY);
         },
         this,
       );
@@ -230,9 +254,13 @@ class ExampleScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * Start the game when clicking the button.
+   * @returns { void }
+   */
   startGame() {
     this.startButton.destroy();
-    this.ball.body.setVelocity(150, -150);
+    this.ball.body.setVelocity(this.ballDX, this.ballDY);
     this.playing = true;
   }
 }
