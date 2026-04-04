@@ -27,12 +27,27 @@ class ExampleScene extends Phaser.Scene {
     this.paddle.setOrigin(0.5, 1);
     this.physics.add.existing(this.paddle);
     this.paddle.body.setImmovable();
+
+    // Game over
+    this.physics.world.checkCollision.down = false;
   }
   update() {
     this.physics.collide(this.ball, this.paddle);
 
     // Paddle controls
     this.paddle.x = this.input.x || this.scale.width * 0.5;
+
+    // Checks if the ball touch the bottom
+    const ballIsOutOfBounds = !Phaser.Geom.Rectangle.Overlaps(
+      this.physics.world.bounds,
+      this.ball.getBounds(),
+    );
+
+    if (ballIsOutOfBounds) {
+      // Game over logic
+      alert("Game over!");
+      location.reload();
+    }
   }
 }
 
