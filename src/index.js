@@ -6,7 +6,10 @@ class ExampleScene extends Phaser.Scene {
   create() {
     this.ball = this.add.sprite(50, 50, "ball");
   }
-  update() { }
+  update() {
+    this.ball.x += 1;
+    this.ball.y += 1;
+  }
 }
 
 const config = {
