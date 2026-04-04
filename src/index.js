@@ -1,6 +1,11 @@
 class ExampleScene extends Phaser.Scene {
-  preload() { }
-  create() { }
+  ball;
+  preload() {
+    this.load.image("ball", "img/ball.png");
+  }
+  create() {
+    this.ball = this.add.sprite(50, 50, "ball");
+  }
   update() { }
 }
 
