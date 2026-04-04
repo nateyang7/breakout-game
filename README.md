@@ -24,7 +24,7 @@ This project is based on the Mozilla tutorial and was built as **learning projec
 - [X] Move the paddle with the **mouse**
 
 ### Game logic
-- [X] Start the game by clicking the **Start button** or pressing the **spacebar**
+- [X] Start the game by clicking the **Start button**
 - [X] Ball collides with bricks and destroy them
 - [X] Score increases by **1 point per brick**
 - [X] Win condition: all bricks are destroyed

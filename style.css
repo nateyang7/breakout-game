@@ -7,11 +7,12 @@ body {
   display: flex;
   flex-direction: column;
   margin: 5em;
+  background: #252525;
 }
 
 
 canvas {
-  background: #eeeeee;
+  background: #C4C4C4;
   margin: 0 auto;
 }
 

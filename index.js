@@ -8,7 +8,6 @@ runButton.addEventListener('click', () => {
 });
 const elementsColor = '#0095DD';
 const gameFont = '16px Arial';
-let spacebarPressed = false;
 let interval = 0;
 let score = 0;
 let lives = 3;
@@ -20,7 +19,7 @@ let ball = {
   y: canvas.height - 30,
   dx: 4,
   dy: -4,
-  color: 'red'
+  color: '#DE305C'
 };
 
 // Paddle
@@ -28,7 +27,7 @@ let paddle = {
   width: 75,
   height: 10,
   x: 0,
-  color: 'blue'
+  color: '#0095DD'
 };
 
 paddle.x = (canvas.width - paddle.width) / 2;
@@ -68,8 +67,6 @@ const keyDownHandler = e => {
     rightPressed = true;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
     leftPressed = true;
-  } else if (e.key === 'spacebar') {
-    spacebarPressed = true;
   }
 }
 
@@ -83,8 +80,6 @@ const keyUpHandler = e => {
     rightPressed = false;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
     leftPressed = false;
-  } else if (e.key === 'spacebar') {
-    spacebarPressed = false;
   }
 }
 
@@ -231,8 +226,6 @@ const checkPressedKeys = () => {
     paddle.x = Math.min(paddle.x + 7, canvas.width - paddle.width);
   } else if (leftPressed) {
     paddle.x = Math.max(paddle.x - 7, 0);
-  } else if (spacebarPressed) {
-    startGame();
   }
 }
 
