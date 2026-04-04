@@ -14,7 +14,12 @@ class ExampleScene extends Phaser.Scene {
     this.load.image("ball", "img/ball.png");
     this.load.image("brick", "img/brick.png");
     this.load.image("paddle", "img/paddle.png");
+    this.load.spritesheet("wobble", "img/wobble.png", {
+      frameWidth: 20,
+      frameHeight: 20,
+    });
   }
+
   create() {
     // Ball
     this.ball = this.add.sprite(
@@ -27,6 +32,14 @@ class ExampleScene extends Phaser.Scene {
     this.ball.body.gravity.y;
     this.ball.body.setCollideWorldBounds(true, 1, 1);
     this.ball.body.setBounce(1);
+
+    this.ball.anims.create({
+      key: "wobble",
+      frameRate: 24,
+      frames: this.anims.generateFrameNumbers("wobble", {
+        frames: [0, 1, 0, 2, 0, 1, 0, 2, 0],
+      }),
+    });
 
     // Paddle
     this.paddle = this.add.sprite(
@@ -71,7 +84,9 @@ class ExampleScene extends Phaser.Scene {
 
   update() {
     // Collision detection
-    this.physics.collide(this.ball, this.paddle);
+    this.physics.collide(this.ball, this.paddle, (ball, paddle) =>
+      this.hitPaddle(ball, paddle),
+    );
     this.physics.collide(this.ball, this.bricks, (ball, brick) => this.hitBrick(ball, brick));
 
     // Paddle controls
@@ -128,9 +143,26 @@ class ExampleScene extends Phaser.Scene {
   }
 
   hitBrick(ball, brick) {
-    brick.destroy();
+    const destroyTween = this.tweens.add({
+      targets: brick,
+      ease: "Linear",
+      repeat: 0,
+      duration: 200,
+      props: {
+        scaleX: 0,
+        scaleY: 0,
+      },
+      onComplete() {
+        brick.destroy();
+      },
+    });
+    destroyTween.play();
     this.score += 10;
     this.scoreText.setText(`Points: ${this.score}`);
+  }
+
+  hitPaddle(ball, paddle) {
+    this.ball.anims.play("wobble");
   }
 
   ballLeaveScreen() {
