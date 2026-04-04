@@ -6,11 +6,12 @@ and destroy bricks. The objective is to break all the bricks without letting the
 below the paddle.
 
 This project is based on the Mozilla tutorial and was built as **learning project** to understand:
-- HTML5 Canvas rendering
+- Phaser framework
 - Game loops and real-time interactions
 - Collision detection and basic game logic
+- Animations
 
-*Tutorial reference*: [Mozilla - Breakout Game Tutorial](https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript)
+*Tutorial reference*: [Mozilla - Breakout Game Tutorial](https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser)
 
 ## Table of contents
 - [Features](#Features)
@@ -30,14 +31,13 @@ This project is based on the Mozilla tutorial and was built as **learning projec
 - [X] Win condition: all bricks are destroyed
 - [X] Lose condition: the ball touches the bottom of the canvas
 
-### Demo
-![Breakout Game Demo](./docs/images/demo.gif)
-
 ## Technologies
 - HTML5
 - CSS3
-- JavaScript (Vanilla)
-- HTML5 Canvas API
+- JavaScript (Phaser)
+
+## Requirements
+- python3
 
 ## Installation
 Clone the repository:
@@ -46,12 +46,11 @@ git clone https://github.com/nateyang7/breakout-game.git
 ```
 
 ## Usage
-1) Open the project folder
-2) Launch `index.html` with a navigator of your choice like Chrome, Firefox or Safari.
-3) Click **Start** or press **spacebar** to begin
-4) Control the paddle using:
-  - **Left/right** arrow keys
-  - **Mouse**
+1) Open the terminal
+2) Navigate to the repository
+3) Run `python3 -m http.server`
+4) Click **Start** to begin
+5) Control the paddle using the **mouse**
 
 ## Project Structure
 WIP
@@ -67,7 +66,8 @@ This project focuses on:
 - Game state management
 
 ## Sources
-- favicon: 
+- Assets are from the tutorial **2D breakout game using Phaser**
+- [favicon](https://www.favicon.cc/)
 
 ## Licence
 This project is open-source and available under the MIT Licence.
