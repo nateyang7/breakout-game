@@ -5,11 +5,11 @@ class ExampleScene extends Phaser.Scene {
   }
   create() {
     this.ball = this.add.sprite(50, 50, "ball");
+    this.physics.add.existing(this.ball);
+    this.ball.body.setVelocity(150, 150);
+    this.ball.body.gravity.y
   }
-  update() {
-    this.ball.x += 1;
-    this.ball.y += 1;
-  }
+  update() { }
 }
 
 const config = {
@@ -22,6 +22,9 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   backgroundColor: "#eeeeee",
+  physics: {
+    default: "arcade",
+  }
 };
 
 const game = new Phaser.Game(config);
