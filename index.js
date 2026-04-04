@@ -33,18 +33,11 @@ let paddle = {
 
 paddle.x = (canvas.width - paddle.width) / 2;
 
-/*
-const paddleHeight = 10;
-const paddleWidth = 75;
-let paddleX = (canvas.width - paddleWidth) / 2;
-*/
-
 // Paddle controls
 let rightPressed = false;
 let leftPressed = false;
 document.addEventListener('keydown', event => keyDownHandler(event));
 document.addEventListener('keyup', event => keyUpHandler(event));
-
 document.addEventListener('mousemove', event => mouseMoveHandler(event));
 
 // Bricks configuration
@@ -61,7 +54,7 @@ const bricks = [];
 for (let column = 0; column < brickColumnCount; column++) {
   bricks[column] = [];
   for (let row = 0; row < brickRowCount; row++) {
-    bricks[column][row] = { x: 0, y: 0, status: isIntact };  // Need enums for brick's status
+    bricks[column][row] = { x: 0, y: 0, status: isIntact };
   }
 }
 
@@ -198,7 +191,7 @@ function collideWithBricks() {
           ball.y < b.y + brickHeight
         ) {
           ball.dy = -ball.dy;
-          b.status = !b.status; // Break the brick
+          b.status = false;
           score++;
           if (score === brickRowCount * brickColumnCount) {
             alert('YOU WIN, CONGRATULATIONS!');
@@ -238,6 +231,8 @@ const checkPressedKeys = () => {
     paddle.x = Math.min(paddle.x + 7, canvas.width - paddle.width);
   } else if (leftPressed) {
     paddle.x = Math.max(paddle.x - 7, 0);
+  } else if (spacebarPressed) {
+    startGame();
   }
 }
 
