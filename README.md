@@ -66,5 +66,8 @@ This project focuses on:
 - Collision detection
 - Game state management
 
+## Sources
+- favicon: 
+
 ## Licence
 This project is open-source and available under the MIT Licence.
